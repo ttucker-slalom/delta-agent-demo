@@ -1,0 +1,12 @@
+{
+  "type": "da",
+  "pluginRoot": "/home/node/.excat-marketplaces/excat-marketplace/excat",
+  "sites": {
+    "delta-agent-demo": {
+      "previewOrg": "ttucker-slalom",
+      "previewSite": "delta-agent-demo",
+      "contentHostUrl": "https://content.da.live/ttucker-slalom/delta-agent-demo/",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}
