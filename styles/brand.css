@@ -38,6 +38,12 @@
   /* content column */
   --article-max-width: 700px;
 
-  /* nav height (matches header .nav-bar min-height) */
-  --nav-height: 92px;
+  /* nav height (matches header .nav-bar min-height; grows on desktop) */
+  --nav-height: 76px;
+}
+
+@media (width >= 900px) {
+  :root {
+    --nav-height: 108px;
+  }
 }

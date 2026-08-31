@@ -83,7 +83,9 @@ export default async function decorate(block) {
     });
   }
 
-  // Build the top utility bar: brand + utility links + Menu/Search buttons
+  // Build the top utility bar. Source layout: each side is a two-row stack —
+  // a utility link on top and an icon control below — flanking a large centered
+  // logo. Left = "Sign up" + hamburger; right = "Visit delta.com" + search.
   const bar = document.createElement('div');
   bar.className = 'nav-bar';
 
@@ -92,12 +94,17 @@ export default async function decorate(block) {
   menuButton.className = 'nav-menu-toggle';
   menuButton.setAttribute('aria-controls', 'nav');
   menuButton.setAttribute('aria-label', 'Menu');
-  menuButton.innerHTML = '<span class="nav-menu-icon"></span>Menu';
+  menuButton.innerHTML = '<span class="nav-menu-icon"></span>';
 
   const searchButton = document.createElement('button');
   searchButton.type = 'button';
   searchButton.className = 'nav-search-toggle';
   searchButton.setAttribute('aria-label', 'Search');
+
+  // Split the two utility links: first stays left, second moves right.
+  const utilityLinks = utility ? utility.querySelectorAll('p') : [];
+  const utilLeft = utilityLinks[0] || null;
+  const utilRight = utilityLinks[1] || null;
 
   // The offcanvas panel wraps main nav + secondary lists behind the Menu button.
   const panel = document.createElement('div');
@@ -117,13 +124,24 @@ export default async function decorate(block) {
   const backdrop = document.createElement('div');
   backdrop.className = 'nav-backdrop';
 
-  // Assemble the bar: utility links on the left, brand centered, tools on the right
-  if (utility) bar.append(utility);
+  // Left stack: "Sign up" link on top, hamburger below.
+  const leftStack = document.createElement('div');
+  leftStack.className = 'nav-left';
+  if (utilLeft) leftStack.append(utilLeft);
+  leftStack.append(menuButton);
+
+  // Right stack: "Visit delta.com" link on top, search icon below.
+  const rightStack = document.createElement('div');
+  rightStack.className = 'nav-right';
+  if (utilRight) rightStack.append(utilRight);
+  rightStack.append(searchButton);
+
+  // The now-empty original utility container is discarded.
+  if (utility) utility.remove();
+
+  bar.append(leftStack);
   if (brand) bar.append(brand);
-  const tools = document.createElement('div');
-  tools.className = 'nav-tools';
-  tools.append(menuButton, searchButton);
-  bar.append(tools);
+  bar.append(rightStack);
 
   nav.append(bar, panel, backdrop);
 

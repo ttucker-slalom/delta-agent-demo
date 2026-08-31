@@ -1,20 +1,83 @@
+/* Delta News Hub footer — three related-content columns + copyright.
+ * Matched to source: white background, top divider, uppercase grey column
+ * headings, thumbnail links. Mobile-first: columns stack, then 3-up at 900px. */
+
 footer {
-  background-color: var(--light-color);
-  font-size: var(--body-font-size-xs);
+  background-color: #fff;
+  border-top: 1px solid #e5e5e5;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
 }
 
-footer .footer > div {
-  margin: auto;
+footer .footer-inner {
   max-width: 1200px;
-  padding: 40px 24px 24px;
+  margin: 0 auto;
+  padding: 40px 24px;
 }
 
-footer .footer p {
+footer .footer-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+footer .footer-column h3 {
+  margin: 0 0 16px;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #63666a;
+}
+
+footer .footer-column ul {
+  list-style: none;
   margin: 0;
+  padding: 0;
 }
 
+footer .footer-column li {
+  margin-bottom: 16px;
+}
+
+footer .footer-column li a {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  color: var(--text-color);
+  font-size: 15px;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+footer .footer-column li a:hover {
+  color: var(--link-color);
+}
+
+footer .footer-column li a img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+footer .footer-legal {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e5e5;
+}
+
+footer .footer-legal p {
+  margin: 0;
+  font-size: 13px;
+  color: #63666a;
+}
+
+/* --- Desktop: three columns side by side --- */
 @media (width >= 900px) {
-  footer .footer > div {
-    padding: 40px 32px 24px;
+  footer .footer-columns {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
