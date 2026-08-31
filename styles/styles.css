@@ -16,7 +16,7 @@
 
 @media (width <= 900px) {
   :root {
-    /* slightly larger type on small screens for readability */
+    /* smaller article type on phones/tablets (source uses fluid type) */
     --body-font-size-m: 18px;
     --heading-font-size-xxl: 30px;
   }
@@ -70,6 +70,7 @@ h6 {
 h1 {
   font-size: var(--heading-font-size-xxl);
   font-family: var(--title-font-family);
+  line-height: 1.1;
 }
 h2 { font-size: var(--heading-font-size-xl); }
 h3 { font-size: var(--heading-font-size-l); }
