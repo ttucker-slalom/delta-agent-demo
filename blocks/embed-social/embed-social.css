@@ -1,0 +1,79 @@
+.embed-social {
+  width: 100%;
+  max-width: 100%;
+  margin: 32px auto;
+  text-align: center;
+}
+
+/* Authored/unloaded state: link cell — center it before the embed renders. */
+.embed-social > div {
+  display: flex;
+  justify-content: center;
+}
+
+/* Loaded state: decorate() replaces the block's contents with the embed
+ * markup, so the iframe/blockquote becomes a direct child. Constrain to the
+ * source's 540px and center it within the article column. */
+.embed-social .instagram-media,
+.embed-social .instagram-media-rendered,
+.embed-social .twitter-tweet,
+.embed-social .twitter-tweet-rendered,
+.embed-social > iframe {
+  max-width: 540px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Fallback (non-social) embeds use a 16:9 responsive wrapper. */
+.embed-social > div[style] {
+  display: block;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.embed-social .embed-social-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+
+.embed-social .embed-social-placeholder > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+}
+
+.embed-social .embed-social-placeholder picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.embed-social .embed-social-placeholder-play button {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(3);
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 20px;
+  padding: 0;
+}
+
+.embed-social .embed-social-placeholder-play button::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 0;
+  height: 10px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 6px solid;
+  top: 4px;
+  left: 7px;
+}

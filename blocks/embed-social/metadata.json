@@ -1,0 +1,40 @@
+{
+  "variantName": "embed-social",
+  "baseBlock": "embed",
+  "version": "1.0.0",
+  "created": "2026-08-31T19:44:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://news.delta.com/more-sips-more-trips-delta-and-starbucks-bring-back-member-favorite-way-earn-miles",
+    "originPage": "Delta News Hub editorial article",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "social-embed",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "single social post URL",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "editorial news articles",
+      "blog posts referencing social media",
+      "pages embedding Instagram or X/Twitter posts"
+    ],
+    "notSuitableFor": [
+      "external video embeds (use embed-video)",
+      "self-hosted video (use video block)"
+    ]
+  },
+  "usage": {
+    "pagesUsing": [
+      "/more-sips-more-trips-delta-and-starbucks-bring-back-member-favorite-way-earn-miles"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-31T19:44:00.000Z"
+  }
+}
