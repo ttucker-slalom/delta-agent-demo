@@ -1,0 +1,38 @@
+{
+  "variantName": "accordion-terms",
+  "baseBlock": "accordion",
+  "version": "1.0.0",
+  "created": "2026-09-01T19:54:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.delta.com/us/en/skymiles/how-to-earn-miles/skymiles-partners-offers",
+    "originPage": "SkyMiles Partners & Offers marketing/offers page",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "legal-disclosure",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "collapsible title + body; used for a single 'Terms and Conditions' legal disclosure",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "terms and conditions disclosures",
+      "collapsible legal/fine-print copy",
+      "FAQ-style expand/collapse sections"
+    ],
+    "notSuitableFor": [
+      "primary navigation",
+      "content that must always be visible"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/skymiles/how-to-earn-miles/skymiles-partners-offers"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-01T19:54:00.000Z"
+  }
+}

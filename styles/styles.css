@@ -1,4 +1,5 @@
 @import url('brand.css');
+@import url('partners-theme.css'); /* page-scoped (body.partners); no effect on other pages */
 
 /*
  * Copyright 2020 Adobe. All rights reserved.

@@ -1,8 +1,100 @@
 {
-  "metadata": {
-    "projectType": "da"
-  },
   "templates": [
+    {
+      "name": "skymiles-partners",
+      "urls": [
+        "https://www.delta.com/us/en/skymiles/how-to-earn-miles/skymiles-partners-offers"
+      ],
+      "representativeUrl": "https://www.delta.com/us/en/skymiles/how-to-earn-miles/skymiles-partners-offers",
+      "description": "Delta.com SkyMiles Partners & Offers marketing page: intro header, tabbed partner-offers browser (Featured/Lodging/Cars/Specialty/Shop & Dine, each an accordion of offers), Delta Sync Partners promo CTA, page-level Terms & Conditions disclosure, and a Next pager.",
+      "blocks": [
+        {
+          "name": "tabs-partners",
+          "instances": [
+            "#maincontent > div.tabs.parbase",
+            "div.tabs.parbase"
+          ]
+        },
+        {
+          "name": "columns-cta",
+          "instances": [
+            "#maincontent > div.sectioncta.parbase",
+            "div.sectioncta.parbase"
+          ]
+        },
+        {
+          "name": "accordion-terms",
+          "instances": [
+            "#maincontent > div.expander",
+            "div.expander"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "intro",
+          "name": "Intro / page header",
+          "selector": [
+            "#maincontent > div.intro"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "#maincontent > div.intro h1",
+            "#maincontent > div.intro p"
+          ]
+        },
+        {
+          "id": "tabs",
+          "name": "Tabbed partner offers browser",
+          "selector": [
+            "#maincontent > div.tabs.parbase"
+          ],
+          "style": null,
+          "blocks": [
+            "tabs-partners"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "sync-cta",
+          "name": "Delta Sync Partners promo CTA",
+          "selector": [
+            "#maincontent > div.sectioncta.parbase"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-cta"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "terms",
+          "name": "Page-level Terms and Conditions",
+          "selector": [
+            "#maincontent > div.expander"
+          ],
+          "style": null,
+          "blocks": [
+            "accordion-terms"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "next-pager",
+          "name": "Next / Convert Partner Points pager",
+          "selector": [
+            "body > div.fresh-air > div:nth-of-type(3) > div.nextprevsection"
+          ],
+          "style": "grey",
+          "blocks": [],
+          "defaultContent": [
+            "div.nextprevsection p",
+            "div.nextprevsection a"
+          ]
+        }
+      ]
+    },
     {
       "name": "delta-article",
       "urls": [
@@ -38,5 +130,8 @@
       ],
       "representativeUrl": "https://news.delta.com/more-sips-more-trips-delta-and-starbucks-bring-back-member-favorite-way-earn-miles"
     }
-  ]
+  ],
+  "metadata": {
+    "projectType": "da"
+  }
 }

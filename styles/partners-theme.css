@@ -1,0 +1,121 @@
+/*
+ * partners-theme.css — page-scoped theme for the SkyMiles Partners & Offers page.
+ *
+ * Applied only when <body class="partners"> (set via the page's `theme` metadata,
+ * consumed by decorateTemplateAndTheme in aem.js). Everything here is scoped under
+ * body.partners so the Delta News Hub article and all other pages are unaffected.
+ *
+ * Design tokens extracted from delta.com:
+ *   - Primary navy  #0B1F66  (headings + body text)
+ *   - Delta red     #E51937  (accent rule / links)
+ *   - Fonts: Whitney (Book/Light/Semibold) → Trebuchet MS / Arial fallback
+ *   - Large headings (H1 52px, H2 42px), square uppercase CTA buttons
+ */
+
+/* Token overrides — scoped to the themed page only */
+body.partners {
+  --background-color: #fff;
+  --light-color: #f4f6f9;
+  --dark-color: #0b1f66;
+  --text-color: #0b1f66;          /* Delta navy */
+  --link-color: #0b1f66;
+  --link-hover-color: #e51937;    /* Delta red on hover */
+  --partners-navy: #0b1f66;
+  --partners-red: #e51937;
+  --partners-border: #bac5d2;
+
+  /* Whitney is a commercial Delta font; fall back to Trebuchet/Arial */
+  --body-font-family: "Trebuchet MS", "Segoe UI", arial, sans-serif;
+  --heading-font-family: "Trebuchet MS", "Segoe UI", arial, sans-serif;
+
+  /* override the base title font (Open Sans Condensed) used by the Delta article */
+  --title-font-family: "Trebuchet MS", "Segoe UI", arial, sans-serif;
+
+  /* delta.com's larger type scale */
+  --heading-font-size-xxl: 52px;  /* H1 */
+  --heading-font-size-xl: 42px;   /* H2 */
+  --heading-font-size-l: 30px;
+  --heading-font-size-m: 24px;
+  --heading-font-size-s: 20px;
+  --heading-font-size-xs: 18px;
+  --body-font-size-m: 20px;
+  --body-font-size-s: 17px;
+
+  color: var(--text-color);
+}
+
+/* Headings: navy, medium weight, generous line-height like delta.com */
+body.partners main h1,
+body.partners main h2,
+body.partners main h3,
+body.partners main h4 {
+  color: var(--partners-navy);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+body.partners main h1 {
+  font-size: var(--heading-font-size-xxl);
+
+  /* Delta's signature red rule under the H1 */
+  padding-bottom: 16px;
+  border-bottom: 4px solid var(--partners-red);
+  display: inline-block;
+}
+
+body.partners main h2 {
+  font-size: var(--heading-font-size-xl);
+}
+
+/* Body copy: navy, light, roomy line-height */
+body.partners main p,
+body.partners main li {
+  color: var(--partners-navy);
+  font-size: var(--body-font-size-m);
+  line-height: 1.4;
+}
+
+/* Eyebrow: the first paragraph above the H1 ("How to Earn Miles") */
+body.partners main .section > div > p:first-child {
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--partners-navy);
+}
+
+/* In-content links: navy, red on hover */
+body.partners main a:any-link {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+body.partners main a:hover {
+  color: var(--partners-red);
+}
+
+/* CTA buttons — delta.com style: white, navy text, grey border, square, uppercase */
+body.partners main a.button:any-link,
+body.partners main button.button {
+  background: #fff;
+  color: var(--partners-navy);
+  border: 1px solid var(--partners-border);
+  border-radius: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 16px 24px;
+  text-decoration: none;
+}
+
+body.partners main a.button:hover,
+body.partners main button.button:hover {
+  background: var(--partners-navy);
+  color: #fff;
+  border-color: var(--partners-navy);
+}
+
+/* Grey section (the "Next" pager) */
+body.partners main .section.grey {
+  background-color: var(--light-color);
+}

@@ -25,13 +25,37 @@ function toggleOffcanvas(nav) {
  * loads and decorates the header
  * @param {Element} block The header block element
  */
+// Read the per-page nav fragment path from the `nav` metadata, if present, so a
+// page can opt into its own header (e.g. theme-scoped) without affecting others.
+function getNavMeta() {
+  const meta = document.head.querySelector('meta[name="nav"]');
+  const val = meta && meta.content ? meta.content.trim() : '';
+  return val || null;
+}
+
+async function fetchNav() {
+  // If the page declares a nav fragment, try it first (both /content and root),
+  // then fall back to the default Delta nav fragment.
+  const candidates = [];
+  const navMeta = getNavMeta();
+  if (navMeta) {
+    const base = navMeta.replace(/\.plain\.html$/, '').replace(/^\//, '');
+    candidates.push(`/${base}.plain.html`);
+    // navMeta may already be /content-prefixed; also try a root variant
+    candidates.push(`/${base.replace(/^content\//, '')}.plain.html`);
+  }
+  candidates.push('/content/nav.plain.html', '/nav.plain.html');
+  for (let i = 0; i < candidates.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    const r = await fetch(candidates[i]);
+    if (r.ok) return r.text();
+  }
+  return null;
+}
+
 export default async function decorate(block) {
-  // Load the nav fragment. Metadata-independent dual-fetch:
-  // /content first (localhost / aem up), then root (DA/EDS production).
-  let resp = await fetch('/content/nav.plain.html');
-  if (!resp.ok) resp = await fetch('/nav.plain.html');
-  if (!resp.ok) return;
-  const html = await resp.text();
+  const html = await fetchNav();
+  if (html === null) return;
 
   const fragment = document.createElement('div');
   fragment.innerHTML = html;
