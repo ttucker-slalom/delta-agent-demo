@@ -1,55 +1,56 @@
+/* delta.com-style tab bar: centered, borderless, navy uppercase labels with an
+ * active-tab underline sitting on a full-width light-grey divider. */
+:root {
+  --partners-navy: #0b1f66;
+  --partners-tab-divider: #d9d9d9;
+}
+
 .tabs-partners .tabs-partners-list {
   display: flex;
-  gap: 0.5ch;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 32px;
   max-width: 100%;
-  font-size: var(--body-font-size-xs);
+  margin: 0 0 32px;
+  border-bottom: 1px solid var(--partners-tab-divider);
   overflow-x: auto;
 }
 
-@media (width >= 600px) {
-  .tabs-partners .tabs-partners-list {
-    font-size: var(--body-font-size-s);
-  }
-}
-
-@media (width >= 900px) {
-  .tabs-partners .tabs-partners-list {
-    font-size: var(--body-font-size-m);
-  }
-}
-
 .tabs-partners .tabs-partners-list button {
-  flex: 0 0 max-content;
+  flex: 0 0 auto;
   margin: 0;
-  border: 1px solid #dadada;
+  border: 0;
+  border-bottom: 3px solid transparent;
   border-radius: 0;
-  padding: 0.5em;
-  background-color: var(--light-color);
-  color: initial;
-  font-weight: bold;
-  line-height: unset;
-  text-align: initial;
-  text-overflow: unset;
-  overflow: unset;
-  white-space: unset;
-  transition: background-color 0.2s;
+  padding: 12px 8px;
+  background: none;
+  color: var(--partners-navy);
+  font-size: var(--body-font-size-s);
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.tabs-partners .tabs-partners-list button:hover {
+  border-bottom-color: var(--partners-tab-divider);
 }
 
 .tabs-partners .tabs-partners-list button p {
   margin: 0;
 }
 
-
 .tabs-partners .tabs-partners-list button[aria-selected='true'] {
-  border-bottom: 1px solid var(--background-color);
-  background-color: var(--background-color);
-  cursor: initial;
+  border-bottom-color: var(--partners-navy);
+  font-weight: 700;
+  cursor: default;
 }
 
 .tabs-partners .tabs-partners-panel {
-  margin-top: -1px;
-  padding: 24px;
-  border: 1px solid #dadada;
+  padding: 0;
   overflow: auto;
 }
 

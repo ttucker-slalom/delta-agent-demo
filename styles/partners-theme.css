@@ -119,3 +119,18 @@ body.partners main button.button:hover {
 body.partners main .section.grey {
   background-color: var(--light-color);
 }
+
+/* --- Header overrides (scoped to this page) --- */
+
+/* delta.com uses a compact wordmark, not the large News Hub logo. Shrink it to a
+ * restrained size across breakpoints (kept centered, matching the existing
+ * accepted nav layout). */
+body.partners header nav .nav-brand img {
+  height: 24px;
+}
+
+@media (width >= 900px) {
+  body.partners header nav .nav-brand img {
+    height: 28px;
+  }
+}
