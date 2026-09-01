@@ -120,17 +120,246 @@ body.partners main .section.grey {
   background-color: var(--light-color);
 }
 
-/* --- Header overrides (scoped to this page) --- */
-
-/* delta.com uses a compact wordmark, not the large News Hub logo. Shrink it to a
- * restrained size across breakpoints (kept centered, matching the existing
- * accepted nav layout). */
-body.partners header nav .nav-brand img {
-  height: 24px;
+/* ---------------------------------------------------------------------------
+ * Header — delta.com global nav (scoped to body.partners)
+ * Single-row midnight-navy bar: logo + inline nav groups + Sign Up / Log in /
+ * bell / search. Collapses to hamburger + offcanvas below 900px.
+ *
+ * Header rules are grouped by component (bar, brand, groups, tools, mobile),
+ * each with its own base + state, which trips no-descending-specificity across
+ * unrelated groups; disable it for the rules below.
+ * ------------------------------------------------------------------------- */
+/* stylelint-disable no-descending-specificity */
+:root {
+  --delta-header-bg: #00172e;   /* sampled from delta.com top bar */
+  --delta-red: #e01933;
 }
 
-@media (width >= 900px) {
-  body.partners header nav .nav-brand img {
-    height: 28px;
+body.partners header .nav-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: var(--delta-header-bg);
+}
+
+body.partners header nav .nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 64px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 8px 24px;
+}
+
+/* Brand */
+body.partners header nav .nav-brand {
+  margin: 0;
+}
+
+body.partners header nav .nav-brand p {
+  margin: 0;
+}
+
+body.partners header nav .nav-brand a {
+  display: block;
+  line-height: 0;
+}
+
+body.partners header nav .nav-brand img {
+  height: 20px;
+  width: auto;
+  filter: brightness(0) invert(1);   /* white knockout on the dark bar */
+}
+
+/* Inline nav groups (desktop) */
+body.partners header nav .nav-groups {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 40px;
+}
+
+body.partners header nav .nav-primary ul,
+body.partners header nav .nav-secondary ul {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.partners header nav .nav-groups a {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+body.partners header nav .nav-groups a:hover { text-decoration: underline; }
+
+/* Right-side tools */
+body.partners header nav .nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+body.partners header nav .nav-signup {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+body.partners header nav .nav-signup:hover { text-decoration: underline; }
+
+body.partners header nav .nav-login {
+  background-color: var(--delta-red);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+body.partners header nav .nav-login:hover { background-color: #b3122a; }
+
+/* Notification bell + search icon buttons */
+body.partners header nav .nav-bell,
+body.partners header nav .nav-search-toggle {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent no-repeat center / 22px;
+  cursor: pointer;
+}
+
+body.partners header nav .nav-bell {
+  background-image: url('/icons/bell.svg');
+}
+
+body.partners header nav .nav-bell-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 8px;
+  background: var(--delta-red);
+  color: #fff;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+}
+
+body.partners header nav .nav-search-toggle {
+  background-image: url('/content/images/search-white.svg');
+  background-size: 22px;
+}
+
+/* Hamburger (mobile only) */
+body.partners header nav .nav-menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+body.partners header nav .nav-menu-icon,
+body.partners header nav .nav-menu-icon::before,
+body.partners header nav .nav-menu-icon::after {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: #fff;
+  position: relative;
+}
+
+body.partners header nav .nav-menu-icon::before,
+body.partners header nav .nav-menu-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+
+body.partners header nav .nav-menu-icon::before { top: -7px; }
+body.partners header nav .nav-menu-icon::after { top: 7px; }
+
+body.partners header nav .nav-backdrop { display: none; }
+
+/* --- Mobile: collapse nav groups behind the hamburger --- */
+@media (width <= 900px) {
+  body.partners header nav .nav-bar {
+    gap: 12px;
+    min-height: 56px;
   }
+
+  body.partners header nav .nav-brand { margin-right: auto; }
+
+  /* Slide-in offcanvas holding the nav groups */
+  body.partners header nav .nav-groups {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: min(320px, 85vw);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 72px 24px 24px;
+    background: #fff;
+    box-shadow: 0 0 24px rgb(0 0 0 / 25%);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    z-index: 101;
+  }
+
+  body.partners header nav[aria-expanded='true'] .nav-groups { transform: translateX(0); }
+
+  body.partners header nav[aria-expanded='true'] .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 50%);
+    z-index: 100;
+  }
+
+  body.partners header nav .nav-primary ul,
+  body.partners header nav .nav-secondary ul {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  body.partners header nav .nav-groups a {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    color: var(--partners-navy);
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Sign Up collapses into the drawer area; keep Log in + icons in the bar */
+  body.partners header nav .nav-signup { display: none; }
+}
+
+/* --- Desktop: hide the hamburger, show inline nav --- */
+@media (width >= 900px) {
+  body.partners header nav .nav-menu-toggle { display: none; }
+  body.partners header nav .nav-brand img { height: 22px; }
 }
