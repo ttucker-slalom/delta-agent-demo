@@ -17,7 +17,11 @@
 }
 
 .tabs-partners .tabs-partners-list button {
+  display: flex;
   flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   margin: 0;
   border: 0;
   border-bottom: 3px solid transparent;
@@ -33,6 +37,13 @@
   white-space: nowrap;
   cursor: pointer;
   transition: border-color 0.2s;
+}
+
+/* Icon above the label (mirrors delta.com's icon tabs) */
+.tabs-partners .tabs-partners-list button .tabs-partners-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
 .tabs-partners .tabs-partners-list button:hover {
