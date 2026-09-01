@@ -3,16 +3,38 @@
 // Content is authored in content/footer.plain.html; this module only reads
 // that DOM and assigns layout classes — it never invents copy.
 
+// Read the per-page footer fragment path from the `footer` metadata, if present,
+// so a page can opt into its own footer without affecting other pages.
+function getFooterMeta() {
+  const meta = document.head.querySelector('meta[name="footer"]');
+  const val = meta && meta.content ? meta.content.trim() : '';
+  return val || null;
+}
+
+async function fetchFooter() {
+  const candidates = [];
+  const footerMeta = getFooterMeta();
+  if (footerMeta) {
+    const base = footerMeta.replace(/\.plain\.html$/, '').replace(/^\//, '');
+    candidates.push(`/${base}.plain.html`);
+    candidates.push(`/${base.replace(/^content\//, '')}.plain.html`);
+  }
+  candidates.push('/content/footer.plain.html', '/footer.plain.html');
+  for (let i = 0; i < candidates.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    const r = await fetch(candidates[i]);
+    if (r.ok) return r.text();
+  }
+  return null;
+}
+
 /**
  * loads and decorates the footer
  * @param {Element} block The footer block element
  */
 export default async function decorate(block) {
-  // Metadata-independent dual-fetch: /content first (localhost), then root (DA/EDS prod).
-  let resp = await fetch('/content/footer.plain.html');
-  if (!resp.ok) resp = await fetch('/footer.plain.html');
-  if (!resp.ok) return;
-  const html = await resp.text();
+  const html = await fetchFooter();
+  if (html === null) return;
 
   const fragment = document.createElement('div');
   fragment.innerHTML = html;

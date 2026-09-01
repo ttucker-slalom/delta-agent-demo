@@ -1,0 +1,38 @@
+{
+  "variantName": "columns-cta",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-09-01T19:54:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.delta.com/us/en/skymiles/how-to-earn-miles/skymiles-partners-offers",
+    "originPage": "SkyMiles Partners & Offers marketing/offers page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "wide",
+    "purpose": "promo-cta",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "2 columns: left eyebrow + descriptive paragraph, right bordered CTA button",
+    "buttonCount": 1,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "text-plus-CTA promo strips",
+      "side-by-side blurb and outline button",
+      "in-page 'explore more' callouts"
+    ],
+    "notSuitableFor": [
+      "image-led hero banners",
+      "3+ column comparison grids with media"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/us/en/skymiles/how-to-earn-miles/skymiles-partners-offers"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-01T19:54:00.000Z"
+  }
+}
