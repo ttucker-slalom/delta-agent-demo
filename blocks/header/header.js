@@ -1,7 +1,12 @@
-// Delta News Hub header: fixed utility navbar + click-triggered offcanvas side nav.
-// Content is authored in content/nav.plain.html (utility links, brand/logo, main
-// nav with accordion groups, and secondary Languages / Delta Sites lists). This
-// module only reads that DOM and wires up behavior — it never invents copy.
+// Header block. Two page-scoped layouts share one block:
+//  - Default (Delta News Hub): fixed utility navbar + click-triggered offcanvas
+//    side nav. Fragment sections: [utility links, brand, main nav, secondary].
+//  - Partners (body.partners): delta.com-style single-row bar — left logo +
+//    inline nav groups + Sign Up / Log in / notification / search on the right,
+//    collapsing to a hamburger + offcanvas on mobile. Fragment sections:
+//    [brand, primary nav, secondary nav, account links].
+// Content is authored in the nav fragment; this module only reads it and wires
+// up behavior — it never invents copy.
 
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
@@ -21,12 +26,8 @@ function toggleOffcanvas(nav) {
   else openOffcanvas(nav);
 }
 
-/**
- * loads and decorates the header
- * @param {Element} block The header block element
- */
 // Read the per-page nav fragment path from the `nav` metadata, if present, so a
-// page can opt into its own header (e.g. theme-scoped) without affecting others.
+// page can opt into its own header without affecting others.
 function getNavMeta() {
   const meta = document.head.querySelector('meta[name="nav"]');
   const val = meta && meta.content ? meta.content.trim() : '';
@@ -34,14 +35,11 @@ function getNavMeta() {
 }
 
 async function fetchNav() {
-  // If the page declares a nav fragment, try it first (both /content and root),
-  // then fall back to the default Delta nav fragment.
   const candidates = [];
   const navMeta = getNavMeta();
   if (navMeta) {
     const base = navMeta.replace(/\.plain\.html$/, '').replace(/^\//, '');
     candidates.push(`/${base}.plain.html`);
-    // navMeta may already be /content-prefixed; also try a root variant
     candidates.push(`/${base.replace(/^content\//, '')}.plain.html`);
   }
   candidates.push('/content/nav.plain.html', '/nav.plain.html');
@@ -53,39 +51,29 @@ async function fetchNav() {
   return null;
 }
 
-export default async function decorate(block) {
-  const html = await fetchNav();
-  if (html === null) return;
+// Reduce a brand section to just its logo link (drop the fallback text label).
+function normalizeBrand(brand) {
+  if (!brand) return;
+  const brandLink = brand.querySelector('a');
+  const img = brandLink && brandLink.querySelector('img');
+  if (brandLink && img) {
+    brandLink.textContent = '';
+    brandLink.append(img);
+  }
+}
 
-  const fragment = document.createElement('div');
-  fragment.innerHTML = html;
-
-  block.textContent = '';
-  const nav = document.createElement('nav');
-  nav.id = 'nav';
-  nav.setAttribute('aria-expanded', 'false');
-  while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
-
-  // Assign section roles: [0] utility links, [1] brand/logo, [2] main nav, [3] secondary
+/* ---------------------------------------------------------------------------
+ * Delta News Hub layout (default)
+ * ------------------------------------------------------------------------- */
+function decorateNewsHub(nav) {
   const [utility, brand, sections, secondary] = nav.children;
   if (utility) utility.classList.add('nav-utility');
   if (brand) brand.classList.add('nav-brand');
   if (sections) sections.classList.add('nav-sections');
   if (secondary) secondary.classList.add('nav-secondary');
 
-  // Strip the visible logo text — the SVG is the wordmark
-  if (brand) {
-    const brandLink = brand.querySelector('a');
-    if (brandLink) {
-      const img = brandLink.querySelector('img');
-      if (img) {
-        brandLink.textContent = '';
-        brandLink.append(img);
-      }
-    }
-  }
+  normalizeBrand(brand);
 
-  // Mark accordion groups (nav items that contain a sub-list)
   if (sections) {
     sections.querySelectorAll(':scope > ul > li').forEach((li) => {
       if (li.querySelector('ul')) {
@@ -107,9 +95,6 @@ export default async function decorate(block) {
     });
   }
 
-  // Build the top utility bar. Source layout: each side is a two-row stack —
-  // a utility link on top and an icon control below — flanking a large centered
-  // logo. Left = "Sign up" + hamburger; right = "Visit delta.com" + search.
   const bar = document.createElement('div');
   bar.className = 'nav-bar';
 
@@ -125,12 +110,10 @@ export default async function decorate(block) {
   searchButton.className = 'nav-search-toggle';
   searchButton.setAttribute('aria-label', 'Search');
 
-  // Split the two utility links: first stays left, second moves right.
   const utilityLinks = utility ? utility.querySelectorAll('p') : [];
   const utilLeft = utilityLinks[0] || null;
   const utilRight = utilityLinks[1] || null;
 
-  // The offcanvas panel wraps main nav + secondary lists behind the Menu button.
   const panel = document.createElement('div');
   panel.className = 'nav-panel';
   const panelHeader = document.createElement('div');
@@ -148,19 +131,16 @@ export default async function decorate(block) {
   const backdrop = document.createElement('div');
   backdrop.className = 'nav-backdrop';
 
-  // Left stack: "Sign up" link on top, hamburger below.
   const leftStack = document.createElement('div');
   leftStack.className = 'nav-left';
   if (utilLeft) leftStack.append(utilLeft);
   leftStack.append(menuButton);
 
-  // Right stack: "Visit delta.com" link on top, search icon below.
   const rightStack = document.createElement('div');
   rightStack.className = 'nav-right';
   if (utilRight) rightStack.append(utilRight);
   rightStack.append(searchButton);
 
-  // The now-empty original utility container is discarded.
   if (utility) utility.remove();
 
   bar.append(leftStack);
@@ -175,9 +155,111 @@ export default async function decorate(block) {
   window.addEventListener('keydown', (e) => {
     if (e.code === 'Escape') closeOffcanvas(nav);
   });
-
-  // Close the panel when switching to desktop width to avoid a stuck-open state
   isDesktop.addEventListener('change', () => closeOffcanvas(nav));
+}
+
+/* ---------------------------------------------------------------------------
+ * Partners layout (delta.com desktop global nav)
+ * ------------------------------------------------------------------------- */
+function decoratePartners(nav) {
+  // Fragment sections: [brand, primary nav, secondary nav, account links].
+  const [brand, primary, secondary, account] = nav.children;
+  if (brand) brand.classList.add('nav-brand');
+  if (primary) primary.classList.add('nav-primary');
+  if (secondary) secondary.classList.add('nav-secondary');
+  if (account) account.classList.add('nav-account');
+
+  normalizeBrand(brand);
+
+  // Turn the account links (Sign Up / Log in) into the right-side action group.
+  const tools = document.createElement('div');
+  tools.className = 'nav-tools';
+  if (account) {
+    const links = [...account.querySelectorAll('a')];
+    links.forEach((a, i) => {
+      const label = a.textContent.trim();
+      // The second action ("Log in") renders as the solid red button.
+      if (/log ?in/i.test(label) || (i === links.length - 1 && links.length > 1)) {
+        a.classList.add('nav-login');
+      } else {
+        a.classList.add('nav-signup');
+      }
+      tools.append(a);
+    });
+    account.remove();
+  }
+
+  // Notification + search icon buttons (behavioral controls, built here).
+  const bell = document.createElement('button');
+  bell.type = 'button';
+  bell.className = 'nav-bell';
+  bell.setAttribute('aria-label', 'Notifications');
+  bell.innerHTML = '<span class="nav-bell-badge">3</span>';
+
+  const searchButton = document.createElement('button');
+  searchButton.type = 'button';
+  searchButton.className = 'nav-search-toggle';
+  searchButton.setAttribute('aria-label', 'Search');
+  tools.append(bell, searchButton);
+
+  // Hamburger for mobile — opens an offcanvas holding the nav groups.
+  const menuButton = document.createElement('button');
+  menuButton.type = 'button';
+  menuButton.className = 'nav-menu-toggle';
+  menuButton.setAttribute('aria-controls', 'nav');
+  menuButton.setAttribute('aria-label', 'Menu');
+  menuButton.innerHTML = '<span class="nav-menu-icon"></span>';
+
+  // Desktop bar: logo + inline nav groups + tools.
+  const bar = document.createElement('div');
+  bar.className = 'nav-bar';
+  bar.append(menuButton);
+  if (brand) bar.append(brand);
+  const groups = document.createElement('div');
+  groups.className = 'nav-groups';
+  if (primary) groups.append(primary);
+  if (secondary) groups.append(secondary);
+  bar.append(groups);
+  bar.append(tools);
+
+  // Offcanvas panel (mobile) reuses the same nav groups by reference; on desktop
+  // the groups live inline in the bar (CSS controls which is visible).
+  const backdrop = document.createElement('div');
+  backdrop.className = 'nav-backdrop';
+
+  nav.append(bar, backdrop);
+
+  menuButton.addEventListener('click', () => toggleOffcanvas(nav));
+  backdrop.addEventListener('click', () => closeOffcanvas(nav));
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape') closeOffcanvas(nav);
+  });
+  isDesktop.addEventListener('change', () => closeOffcanvas(nav));
+}
+
+/**
+ * loads and decorates the header
+ * @param {Element} block The header block element
+ */
+export default async function decorate(block) {
+  const html = await fetchNav();
+  if (html === null) return;
+
+  const fragment = document.createElement('div');
+  fragment.innerHTML = html;
+
+  block.textContent = '';
+  const nav = document.createElement('nav');
+  nav.id = 'nav';
+  nav.setAttribute('aria-expanded', 'false');
+  while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
+
+  if (document.body.classList.contains('partners')) {
+    nav.classList.add('nav-partners-layout');
+    decoratePartners(nav);
+  } else {
+    decorateNewsHub(nav);
+  }
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
